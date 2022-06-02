@@ -79,3 +79,8 @@
   height: 35px;
   width: 100px;
 }
+.task {
+  margin-top: 50px;
+  color: green;
+  text-align: center;
+}

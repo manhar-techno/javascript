@@ -15,7 +15,8 @@ const renderScore = document.querySelector(".player-score");
 const renderCountry = document.querySelector(".player-country");
 
 //Data structures to take data
-const players = [];
+let players = [];
+getData();
 class NewPlayer {
   constructor(firstName, lastName, score, country) {
     this.firstName = firstName;
@@ -49,10 +50,11 @@ function renderData(players) {
   document.querySelector(".renderPlayers").innerHTML = "";
   players.sort((a, b) => b.score - a.score);
   players.map((e, i) => {
+    const dateFormatted = new Date(e.date).toDateString();
     const html = `<div class="players-list">
       <div class="basic-info">
         <h2 class="player-name">${e.firstName + " " + e.lastName}</h2>
-        <h3 class="player-date">${e.date.toDateString()}</h3>
+        <h3 class="player-date">${dateFormatted}</h3>
       </div>
       <h2 class = 'player-country'>${e.country}</h2>
       <h2 class='player-score'>${e.score}</h2>
@@ -70,7 +72,7 @@ function renderData(players) {
   });
 
   //consoling data
-  const getData = JSON.parse(localStorage.getItem("Players"));
+
   //Decreasing Score
   //   document
   //     .getElementsByClassName(".reduce-score")
@@ -112,14 +114,16 @@ function renderData(players) {
 function decrease(i) {
   players[i].score -= 5;
   renderData(players);
+  taskAchievement();
 }
 
 function increase(i) {
   players[i].score += 5;
   renderData(players);
+  taskAchievement();
 }
 function deletePlayer(i) {
-  const confirmation = confirm();
+  const confirmation = confirm("Are you sure you want to delete?");
   if (!confirmation) return;
   players.splice(players[i], 1);
   renderData(players);
@@ -127,4 +131,18 @@ function deletePlayer(i) {
 }
 function _setLocalStorage(players) {
   localStorage.setItem("Players", JSON.stringify(players));
+}
+function taskAchievement() {
+  document.querySelector(".task").classList.remove("hidden");
+  setTimeout(() => {
+    document.querySelector(".task").classList.add("hidden");
+  }, 1000);
+}
+
+function getData() {
+  const data = JSON.parse(localStorage.getItem("Players"));
+  if (players.length === 0) players = data;
+  console.log(players);
+  console.log(new Date("2022-06-02T09:50:26.950Z").toDateString());
+  //   renderData(players);
 }
