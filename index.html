@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JavaScript Demo Project</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <style></style>
+  </head>
+  <body>
+    <div>
+      <div>
+        <h1 id="main-heading">Players list</h1>
+      </div>
+      <form class="form">
+        <input
+          type="text"
+          max-length="20"
+          placeholder="First Name"
+          class="input-first-name"
+          required
+        />
+        <input
+          type="text"
+          max-length="20"
+          placeholder="Last Name"
+          class="input-last-name"
+          required
+        />
+        <input
+          type="text"
+          max-length="20"
+          placeholder="Country"
+          class="input-country"
+          required
+        />
+        <input type="number" placeholder="Score" class="input-score" required />
+        <input type="submit" id="submit-button" />
+      </form>
+    </div>
+    <h2 class="fieldError hidden">All fields are required</h2>
+    <!-- <div class="players-list">
+      <div class="basic-info">
+        <h2 class="player-name">player-name</h2>
+        <h3 class="player-date">Date</h3>
+      </div>
+      <h2 class = 'player-country'>Country</h2>
+      <h2 class='player-score'>Score</h2>
+      <div class="buttons">
+        <button class="btn delete"><i class="fa fa-trash"></i></button>
+        <button class="btn add-score">+5</button>
+        <button class="btn reduce-score">-5</button>
+      </div>
+    </div> -->
+    <div class="renderPlayers"></div>
+    <script asynch src="script.js"></script>
+  </body>
+</html>
