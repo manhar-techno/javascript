@@ -48,6 +48,7 @@ submitButton.addEventListener("click", function (e) {
 
 function renderData(players) {
   document.querySelector(".renderPlayers").innerHTML = "";
+  if (!players) return;
   players.sort((a, b) => b.score - a.score);
   players.map((e, i) => {
     const dateFormatted = new Date(e.date).toDateString();
@@ -110,7 +111,7 @@ function renderData(players) {
 //   renderData(players);
 // });
 
-/////////////////////////////////////////
+///Function/////////////////////////////////////////
 function decrease(i) {
   players[i].score -= 5;
   renderData(players);
@@ -142,7 +143,5 @@ function taskAchievement() {
 function getData() {
   const data = JSON.parse(localStorage.getItem("Players"));
   if (players.length === 0) players = data;
-  console.log(players);
-  console.log(new Date("2022-06-02T09:50:26.950Z").toDateString());
-  //   renderData(players);
+  renderData(players);
 }
