@@ -40,24 +40,34 @@
           required
         />
         <input type="number" placeholder="Score" class="input-score" required />
-        <input type="submit" id="submit-button" />
+        <input type="submit" id="submit-button" value="Add Player" />
       </form>
     </div>
     <h2 class="fieldError hidden">All fields are required</h2>
-    <!-- <div class="players-list">
-      <div class="basic-info">
-        <h2 class="player-name">player-name</h2>
-        <h3 class="player-date">Date</h3>
-      </div>
-      <h2 class = 'player-country'>Country</h2>
-      <h2 class='player-score'>Score</h2>
-      <div class="buttons">
-        <button class="btn delete"><i class="fa fa-trash"></i></button>
-        <button class="btn add-score">+5</button>
-        <button class="btn reduce-score">-5</button>
-      </div>
-    </div> -->
+    <div class="overlay hidden">
+      <center>
+        <div class="confirm-delete hidden">
+          <h3 id="delete-alert">
+            Are you sure you want to delete this player?
+          </h3>
+          <div class="confirmation">
+            <button class="btn-yes delete-alert-buttons">Yes</button>
+            <button class="btn-no delete-alert-buttons">No</button>
+          </div>
+        </div>
+      </center>
+    </div>
+    <!-- More  -->
+    <div class="not-number overlay hidden">
+      <center>
+          <h3 id="number-alert">
+            Are you sure you want to delete this player?
+          </h3>
+      </center>
+    </div>
+    <!-- More -->
     <div class="renderPlayers"></div>
-    <script src="script.js"></script>
+    <h2 class="task hidden">Task Achieved!</h2>
+    <script asynch src="script.js"></script>
   </body>
 </html>
