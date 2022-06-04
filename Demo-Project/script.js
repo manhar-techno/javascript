@@ -1,4 +1,7 @@
 "use strict";
+// import swal from "sweetalert";
+// const { default: swal } = require("sweetalert");
+
 //Values of input
 const namePlayer = document.querySelector(".input-first-name");
 const lastNamePlayer = document.querySelector(".input-last-name");
@@ -7,9 +10,9 @@ const countryPlayer = document.querySelector(".input-country");
 const submitButton = document.querySelector("#submit-button");
 const form = document.querySelector(".form");
 const requiredMessage = document.querySelector(".fieldError");
-const overlay = document.querySelector(".overlay");
-const deleteButton = document.querySelector(".confirm-delete");
-
+// const overlay = document.querySelector(".overlay");
+// const deleteButton = document.querySelector(".confirm-delete");
+const accessMenu = document.querySelector(".access-menu");
 //Render Information
 const renderName = document.querySelector(".player-name");
 const renderDate = document.querySelector(".player-date");
@@ -21,7 +24,7 @@ let players = [];
 
 //Getting data from local storage
 getData();
-
+gettingCountry();
 class NewPlayer {
   constructor(firstName, lastName, score, country) {
     this.firstName = firstName;
@@ -41,11 +44,20 @@ submitButton.addEventListener("click", function (e) {
   const score = Number.parseInt(scorePlayer.value);
 
   //VALID INPUTS
-  const validInputs = (...inputs) => inputs.every((inp) => inp);
-  if (!validInputs(firstName, lastName, country, score))
-    return requiredMessage.classList.remove("hidden");
-
-  if (isNaN(score)) return alert("Enter a valid number");
+  const validInputs = (...inputs) => inputs.every((inp) => !inp);
+  if (validInputs(firstName, lastName, country, score)) {
+    requiredMessage.classList.remove("hidden");
+    setTimeout(() => {
+      requiredMessage.classList.add("hidden");
+    }, 2000);
+    return;
+  }
+  //Score
+  if (isNaN(score))
+    return swal("Kindly add valid number!", {
+      buttons: false,
+      timer: 1500,
+    });
 
   const inputPlayer = new NewPlayer(firstName, lastName, score, country);
   players.push(inputPlayer);
@@ -53,7 +65,12 @@ submitButton.addEventListener("click", function (e) {
 });
 
 function renderData(players) {
-  requiredMessage.classList.add("hidden");
+  gettingCountry();
+  if (players.length === 0) {
+    accessMenu.classList.add("hidden");
+  } else accessMenu.classList.remove("hidden");
+
+  // requiredMessage.classList.add("hidden");
   document.querySelector(".renderPlayers").innerHTML = "";
   _setLocalStorage();
   //if no players then return
@@ -135,28 +152,25 @@ function increase(i) {
   renderData(players);
   taskAchievement();
 }
-function deletePlayer(i) {
-  displayDeleteAlert();
-  // const confirmation = confirm("Are you sure you want to delete?");
-  // if (!confirmation) return;
-  console.log("closure");
-  deleteButton.addEventListener(
-    "click",
-    function (e) {
-      if (e.target.classList.contains("btn-yes")) {
-        console.log("yes");
-        players.splice(players[i], 1);
-        displayDeleteAlert();
-        renderData(players);
-      }
-      if (e.target.classList.contains("btn-no")) {
-        console.log("no");
-        displayDeleteAlert();
-      }
-    },
-    { once: true }
-  );
-}
+// function deletePlayer(i) {
+//   displayDeleteAlert();
+//   // const confirmation = confirm("Are you sure you want to delete?");
+//   // if (!confirmation) return;
+//   deleteButton.addEventListener(
+//     "click",
+//     function (e) {
+//       if (e.target.classList.contains("btn-yes")) {
+//         players.splice(players[i], 1);
+//         displayDeleteAlert();
+//         renderData(players);
+//       }
+//       if (e.target.classList.contains("btn-no")) {
+//         displayDeleteAlert();
+//       }
+//     },
+//     { once: true }
+//   );
+// }
 function _setLocalStorage() {
   localStorage.setItem("Players", JSON.stringify(players));
 }
@@ -172,18 +186,93 @@ function getData() {
   if (players.length === 0 && data !== null) players = data;
   renderData(players);
 }
-
-function displayDeleteAlert() {
-  console.log("hiding");
-  overlay.classList.toggle("hidden");
-  deleteButton.classList.toggle("hidden");
-}
+// displayDeleteAlert();
+// function displayDeleteAlert() {
+//   overlay.classList.toggle("hidden");
+//   deleteButton.classList.toggle("hidden");
+// }
 // function displayNumberAlert() {
 //   overlay.classList.toggle("hidden");
 //   document.querySelector(".not-number").classList.toggle("hidden");
 // }
 
-overlay.addEventListener("click", function () {
-  overlay.classList.add("hidden");
-  deleteButton.classList.add("hidden");
+// overlay.addEventListener("click", function () {
+//   overlay.classList.add("hidden");
+//   deleteButton.classList.add("hidden");
+// });
+
+accessMenu.addEventListener("click", function (e) {
+  if (e.target.classList.contains("clear")) {
+    swal({
+      title: "Warning!",
+      text: "Clearing your player list will result in permanent deletion of files.",
+      icon: "warning",
+      buttons: ["Cancel", "Resume"],
+      dangerMode: true,
+    }).then((value) => {
+      if (value) {
+        localStorage.clear();
+        players = [];
+        renderData(players);
+
+        swal({
+          title: "success!",
+          icon: "success",
+        });
+      } else return;
+    });
+  }
 });
+
+function deletePlayer(i) {
+  //////////
+
+  swal({
+    title: "Warning!",
+    text: "Are you sure you want to delete player out of the player list?",
+    icon: "warning",
+    buttons: ["No", "Yes"],
+    dangerMode: true,
+  }).then((value) => {
+    if (value) {
+      players.splice(players[i], 1);
+      renderData(players);
+      swal({
+        title: "success!",
+        icon: "success",
+      });
+    } else return;
+  });
+  // }
+  //   });
+  /////////
+}
+
+////Getting country
+function gettingCountry() {
+  navigator.geolocation.getCurrentPosition(
+    (geolocation) => {
+      console.log(geolocation);
+      const { longitude: long, latitude: lat } = geolocation.coords;
+      var reverseGeocoder = new BDCReverseGeocode();
+      reverseGeocoder.getClientLocation(
+        {
+          latitude: lat,
+          longitude: long,
+        },
+        function (result) {
+          const { countryName } = result;
+          countryPlayer.value = countryName;
+        }
+      );
+    },
+    (error) => {
+      swal({
+        title: "Sorry, we are unable to retrieve your location",
+        text: `reason: ${error.message}`,
+        buttons: false,
+        timer: 1000,
+      });
+    }
+  );
+}

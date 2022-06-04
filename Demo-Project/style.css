@@ -58,6 +58,7 @@
   height: 30px;
   border-radius: 50%;
   width: 30px;
+  cursor: pointer;
 }
 .basic-info {
   margin: auto;
@@ -69,6 +70,7 @@
 }
 .hidden {
   display: none;
+  opacity: 0;
 }
 .fieldError {
   text-align: center;
@@ -100,6 +102,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
 }
 .confirmation {
   /* position: relative; */
@@ -174,4 +178,76 @@
   font-size: 20px;
   position: relative;
   top: 10px;
+}
+/* Here is the button */
+/* <!-- HTML !--> */
+
+/* CSS */
+.button-45 {
+  align-items: center;
+  background-color: #ffe7e7;
+  background-position: 0 0;
+  border: 1px solid #fee0e0;
+  border-radius: 11px;
+  box-sizing: border-box;
+  color: #d33a2c;
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 33.4929px;
+  list-style: outside url(https://www.smashingmagazine.com/images/bullet.svg)
+    none;
+  padding: 2px 12px;
+  text-align: left;
+  text-decoration: none;
+  text-shadow: none;
+  text-underline-offset: 1px;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  word-break: break-word;
+  grid-column: 2 / 3;
+  height: 30px;
+  position: absolute;
+  right: 10%;
+}
+
+.button-45:active,
+.button-45:hover,
+.button-45:focus {
+  outline: 0;
+}
+
+.button-45:active {
+  background-color: #d33a2c;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 1px 3px 0 inset;
+  color: #ffffff;
+}
+
+.button-45:hover {
+  background-color: #ffe3e3;
+  border-color: #faa4a4;
+}
+
+.button-45:active:hover,
+.button-45:focus:hover,
+.button-45:focus {
+  background-color: #d33a2c;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 1px 3px 0 inset;
+  color: #ffffff;
+}
+.access-menu {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+  margin: 30px;
+}
+#delete-alert {
+  font-weight: 500;
+}
+#login-sign {
+  font-weight: 1000;
 }
