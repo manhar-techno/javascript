@@ -13,6 +13,7 @@ const requiredMessage = document.querySelector(".fieldError");
 // const overlay = document.querySelector(".overlay");
 // const deleteButton = document.querySelector(".confirm-delete");
 const accessMenu = document.querySelector(".access-menu");
+const loader = document.querySelector(".center");
 //Render Information
 const renderName = document.querySelector(".player-name");
 const renderDate = document.querySelector(".player-date");
@@ -24,6 +25,10 @@ let players = [];
 
 //Getting data from local storage
 getData();
+if (players.length > 3) {
+  loader.classList.remove("hidden");
+  setTimeout(() => loader.classList.add("hidden"), 2000);
+}
 gettingCountry();
 class NewPlayer {
   constructor(firstName, lastName, score, country) {
@@ -44,14 +49,18 @@ submitButton.addEventListener("click", function (e) {
   const score = Number.parseInt(scorePlayer.value);
 
   //VALID INPUTS
-  const validInputs = (...inputs) => inputs.every((inp) => !inp);
-  if (validInputs(firstName, lastName, country, score)) {
+  const validInputs = (...inputs) =>
+    inputs.some((inp) => {
+      return !inp;
+    });
+  if (validInputs(firstName, lastName, country)) {
     requiredMessage.classList.remove("hidden");
     setTimeout(() => {
       requiredMessage.classList.add("hidden");
     }, 2000);
     return;
   }
+
   //Score
   if (isNaN(score))
     return swal("Kindly add valid number!", {
@@ -66,6 +75,7 @@ submitButton.addEventListener("click", function (e) {
 
 function renderData(players) {
   gettingCountry();
+
   if (players.length === 0) {
     accessMenu.classList.add("hidden");
   } else accessMenu.classList.remove("hidden");
@@ -252,7 +262,6 @@ function deletePlayer(i) {
 function gettingCountry() {
   navigator.geolocation.getCurrentPosition(
     (geolocation) => {
-      console.log(geolocation);
       const { longitude: long, latitude: lat } = geolocation.coords;
       var reverseGeocoder = new BDCReverseGeocode();
       reverseGeocoder.getClientLocation(
